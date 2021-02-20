@@ -2,103 +2,79 @@
 # coding: utf-8
 
 
+import os
+import datetime
+
 import pandas as pd
 from bokeh.io import curdoc
-from bokeh.models import ColumnDataSource, HoverTool
-from bokeh.plotting import figure
-from bokeh.models.widgets import Select
-from bokeh.layouts import row, column
-from bokeh.models import LinearColorMapper
-from bokeh.transform import transform
+
+from helpers.data import get_data, get_date
+from helpers.plot import bokeh_plot_layout, bokeh_barplot, bokeh_table, bokeh_geoplot
 
 
-def plot():
-    '''function to build the graph'''
+def to_update_date(x):
+    x = x.split('/')[-1]
+    y, m, d = tuple(x.split('-')[:3])
 
-    # defaults value for the graph
-    default_x_axis = 'sepal_length'
-    default_y_axis = 'sepal_width'
-    default_color = 'petal_length'
-    default_size = 'petal_width'
-    
-    source = ColumnDataSource(data={'x_axis': iris[default_x_axis],
-                                    'y_axis': iris[default_y_axis],
-                                    'color': iris[default_color],
-                                    'size': iris[default_size]*3.5,
-                                    'specie': iris['specie'],
-                                    'sepal_length': iris['sepal_length'],
-                                    'sepal_width': iris['sepal_width'],
-                                    'petal_length': iris['petal_length'],
-                                    'petal_width': iris['petal_width'],
-                                   })
-    
-    color_mapper = LinearColorMapper(palette="Viridis256", low=iris[default_color].min(), high=iris[default_color].max())
-    
-    p = figure(title=default_x_axis+" vs "+default_y_axis, plot_width=700, plot_height=500)
-    p.circle(x='x_axis', y='y_axis', size='size', color=transform('color', color_mapper), fill_alpha=0.5, source=source)
-    
-    p.add_tools(HoverTool(tooltips=[
-        ('Specie', '@specie'),
-        ('Sepal length', "@sepal_length"),
-        ('Sepal width', "@sepal_width"),
-        ('Petal length', "@petal_length"),
-        ('Petal width', "@petal_width")
-        ]))
-
-    # set axis labels
-    p.xaxis.axis_label = default_x_axis
-    p.yaxis.axis_label = default_y_axis
-    
-    select_x_axis = Select(title="X-Axis", value=axis[0], options=axis, width=200)
-    select_y_axis = Select(title="Y-Axis", value=axis[1], options=axis, width=200)
-    select_color = Select(title="Color", value=axis[2], options=axis, width=200)
-    select_size = Select(title="Size", value=axis[3], options=axis, width=200)
-    
-    selects = column(select_x_axis, select_y_axis, select_color, select_size)
-    
-    def update_x_axis(attrname, old, new):
-        '''callback function to udpate the x_axis'''
-        source.data['x_axis'] = iris[select_x_axis.value]
-        p.xaxis.axis_label = select_x_axis.value
-        a = p.title.text.split('vs')
-        a[0] = select_x_axis.value
-        p.title.text = " vs ".join(a)
-    select_x_axis.on_change('value', update_x_axis)
-    
-    def update_y_axis(attrname, old, new):
-        '''callback function to udpate the x_axis'''
-        source.data['y_axis'] = iris[select_y_axis.value]
-        p.yaxis.axis_label = select_y_axis.value
-        a = p.title.text.split('vs')
-        a[1] = select_y_axis.value
-        p.title.text = " vs ".join(a)
-    select_y_axis.on_change('value', update_y_axis)
-    
-    def update_color(attrname, old, new):
-        source.data['color'] = iris[select_color.value]
-    select_color.on_change('value', update_color)
-    
-    def update_size(attrname, old, new):
-        '''callback function to udpate the x_axis'''
-        source.data['size'] = iris[select_size.value]*3.5
-    select_size.on_change('value', update_size)
-    
-    layout = row(selects, p, name='my_layout')
-    
-    return layout
+    return '-'.join([d, m, y])
 
 
-# loading data
-iris = pd.read_csv('dashboard/data/iris.csv')
+# Local CSV
+GEO_DATA = 'dashboard/data/ecowas-gps.csv'
 
-# number of features
-axis = list(iris.columns[:4])
+# Set HTML page title
+curdoc().title = 'ECOWAS - Covid19 Tracker'
 
-# DataFrame to ColumnDataSource
-source = ColumnDataSource(data=iris)
+# Load data
+print("Donwload data from Github")
+ecowas, update_date = get_data()
 
-# build the graph
-curdoc().add_root(plot())
+print("Read data from ecowas-gps.csv")
+ecowas_geo = pd.read_csv(GEO_DATA)
+ecowas[['x', 'y']] = ecowas_geo[['x', 'y']]
 
-# set html page title
-curdoc().title = 'Iris Dataset Explorer'
+countries = ecowas['Country_Region']
+
+# Agregated indicators
+print("Calculate aggregate KPIs")
+confirmed = int(ecowas.Confirmed.sum())
+active = int(ecowas.Active.sum())
+recovered = int(ecowas.Recovered.sum())
+deaths = int(ecowas.Deaths.sum())
+
+
+print("Add template Variables")
+curdoc().template_variables['update_date'] = update_date
+curdoc().template_variables['indicator_names'] = ['Confirmed', 'Recovered', 'Active', 'Deaths']
+curdoc().template_variables['indicators'] = {
+    'Confirmed': {
+        'title': 'Confirmed',
+        'value': confirmed
+        },
+    'Recovered': {
+        'title': 'Recovered',
+        'value': recovered
+        },
+    'Active': {
+        'title': 'Active',
+        'value': active
+        },
+    'Deaths': {
+        'title': 'Deaths',
+        'value': deaths
+        },
+}
+
+# Build the graph
+curdoc().add_root(bokeh_plot_layout(ecowas))
+
+# Barplot
+curdoc().add_root(bokeh_barplot(ecowas))
+
+# Geoplot
+curdoc().add_root(bokeh_geoplot(ecowas))
+
+# Table
+curdoc().add_root(bokeh_table(ecowas))
+
+print("Launch App")

@@ -1,47 +1,99 @@
 {% extends base %}
 
 {% block preamble %}
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-    <meta name="description" content="Explore the iris dataset.">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="robots" content="all,index,follow">
-    <meta name="Keywords" content="iris, dataset, python, bokeh, dataviz, datavisualization">
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-    <meta name="Distribution" content="Global">
-    <meta name="Author" content="Joseph Konka - joseph.kakone@gmail.com">
-
-    <meta property="og:title" content="Iris Dataset Explorer">
-    <meta property="og:description" content="A Bokeh Appllication for exploring the iris dataset">
+    <!-- Open Graph Infos -->
+    <meta property="og:fb:app_id" content="283781016271815">
+    <meta property="og:title" content="ECOWAS  - Covid19 Tracker">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="http://iris-explorer.herokuapp.com/">
-    <meta property="og:image" content="http://iris-explorer.herokuapp.com/static/img/cover.png">
-    <meta property="og:image:width" content="938">
-    <meta property="og:image:height" content="528">
-
+    <meta property="og:url" content="https://ecowas-covid19-tracker.herokuapp.com">
+    <meta property="og:image" content="https://ecowas-covid19-tracker.herokuapp.com/dashboard/static/img/cover.png">
+    <meta property="og:description" content="Dashboard for Covid19 tracking in ECOWAS">
+    <meta property="og:image:width" content="800">
+    <meta property="og:image:height" content="400">
     <link rel="stylesheet" href="dashboard/static/css/style.css">
+    <link rel="shortcut icon" href="dashboard/static/img/favicon.png">
+    <!-- Facebook comments -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v7.0&appId=283781016271815&autoLogAppEvents=1" nonce="DfsG79O6"></script>
+    <!-- AddThis-->
+    <!-- Go to www.addthis.com/dashboard to customize your tools -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e1ed9905267f8e8"></script>
 {% endblock %}
 
 {% block contents %}
     <div id="container">
-        <h1>Explore Iris Dataset*</h1>
-        <!-- About Iris -->
-        <div>
-            <h2>About Iris Dataset</h2>
-            <p>The Iris flower data set or Fisher's Iris data set is a multivariate data set introduced by the British statistician, eugenicist, and biologist Ronald Fisher in his 1936 paper The use of multiple measurements in taxonomic problems as an example of linear discriminant analysis. It is sometimes called Anderson's Iris data set because Edgar Anderson collected the data to quantify the morphologic variation of Iris flowers of three related species. Two of the three species were collected in the Gaspé Peninsula "all from the same pasture, and picked on the same day and measured at the same time by the same person with the same apparatus". Fisher's paper was published in the journal, the Annals of Eugenics, creating controversy about the continued use of the Iris dataset for teaching statistical techniques today.<br>The data set consists of 50 samples from each of three species of Iris (Iris setosa, Iris virginica and Iris versicolor). Four features were measured from each sample: the length and the width of the sepals and petals, in centimeters. Based on the combination of these four features, Fisher developed a linear discriminant model to distinguish the species from each other.<br>Source: <a href="https://en.wikipedia.org/wiki/Iris_flower_data_set" target="_blank">Wikipedia</a></p>
-        </div>
-        <div>
-            <h2>Explore</h2>
-            <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus.<br>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</p>
-            <div id='bokeh__layout'>
-                {{ embed(roots.my_layout) }}
+        <!-- Header -->
+        <hr>
+        <div class="row">
+            <div class="column">
+                <h1>ECOWAS - Covid19 Tracker</h1>
+                <p>Last Update: {{ update_date }}</p>
+            </div>
+            <div class="column">
+                <div class="row">
+                    <span>by</span>
+                    <h2><a class="link" href="https://github.com/joekakone" target="_blank">Joseph Konka</a></h2>
+                </div>
+                <p class="right">from <a class="link" href="http://www.rintio.com" target="_blank"><strong>RINTIO DataLab</strong></a></p>
             </div>
         </div>
-        <!-- About Author -->
+        <hr>
         <div>
-            <h2>About Author</h2>
-            <p>I am <a href="https://joekakone.github.io" target="_blank">Joseph Konka</a>, Junior Data Scientist at <a href="http://www.rintio.com" target="_blank">RINTIO</a>. I am a Mathematics Bachelor graduate from University of Lomé. Togo is where I grew up but I now live in Benin. Feel free to reach me via mail <a href="mailto:joseph.kakone@gmail.com" target="_blank">joseph.kakone@gmail.com</a>. Find the source code on <a href="https://github.com/joekakone/iris-explorer" target="_blank">Github</a>. <br>Kind reagards !</p>
+            <!-- Indicators -->
+            <div id="indicators" class="row">
+                {% for name in indicator_names %}
+                <div class="indicator">
+                    <h2 class="indicator-value">{{ indicators[name].value }}</h2>
+                    <h5 class="indicator-title">{{ indicators[name].title }}</h5>
+                </div>
+                {% endfor %}
+            </div>
+            <hr>
+            <!-- Bokeh Plots -->
+            <div class="column">
+                <div class="bokeh__plot">
+                    <p>With the select widget choose the indicator to view</p>
+                    {{ embed(roots.barplot) }}
+                </div>
+                <h2>Map Plot</h2>
+                <div class="bokeh__plot">
+                    {{ embed(roots.geoplot) }}
+                </div>
+                <h2>Explore</h2>
+                <div class="bokeh__plot">
+                    <p>With the widgets you can choose the axes of the graphs. The size of the bubbles represents the number of deaths.</p>
+                    {{ embed(roots.layout) }}
+                </div>
+                <h2>Raw Data</h2>
+                <div class="bokeh__plot">
+                    {{ embed(roots.data_table) }}
+                </div>
+            </div>
+
+            <!-- Feedbacks -->
+            <h2>Comments & Feedbacks</h2>
+            <p>Feel free to leave your feedbacks in comments or tell what you think about the management of the crisis in ECOWAS zone. Share the tool with your friends and colleagues. Kind regards !</p>
+            <div id="facebook">
+                <!-- Facebook like -->
+                <div class="fb-like" data-href="https://ecowas-covid19-tracker.herokuapp.com" data-width="" data-layout="standard" data-action="like" data-size="small" data-share="true"></div>
+                <!-- Facebook comments -->
+                <div class="fb-comments" data-href="https://ecowas-covid19-tracker.herokuapp.com" data-numposts="5" data-width="100%" data-colorscheme="light"></div>
+            </div>
+
+            <!-- About -->
+            <div>
+                <h2>Source</h2>
+                <p>The data used comes exclusively from <a class="link" href="https://github.com/CSSEGISandData/COVID-19" target="_blank">https://github.com/CSSEGISandData/COVID-19</a></p>
+
+                <h2>Author</h2>
+                <p>Joseph Konka works at RINTIO as Junior Data Scientist. He received his bachelor of mathematics at University of Lomé in 2019. He is currently living at Cotonou.<a class="link" href="https://github.com/joekakone">Discover more..</a></p>
+            </div>
+
+            <!-- Disclaimer -->
+            <div>
+                <hr>
+                <p class="center"><strong>This project has no relation with ECOWAS Organization. Please contact <a class="link" href="mailto:joseph.kakone@gmail.com">joseph.kakone@gmail.com</a> for more informations.</strong></p>
+            </div>
         </div>
     </div>
 {% endblock%}

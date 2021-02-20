@@ -2,6 +2,7 @@
 Makefile
 *.ipynb
 *.sh
+dashboard/data/*-*-*-ecowas-covid19.csv
 dashboard/data/time_series/
 dashboard/data/time_series*.csv
 

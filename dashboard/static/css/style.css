@@ -1,31 +1,62 @@
-#bokeh__layout {
-    margin: auto;
+body {
+	font-family: Arial, sans-serif;
 }
 
 #container {
-    display: flex;
-    flex-direction: column;
-    width: 1000px;
+	width: 1000px;
+	margin: auto;
+}
+
+.row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-content: center;
+
+}
+
+.column { 
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-content: center;
+}
+
+#indicators{
+	justify-content: space-around;
+}
+
+.bokeh__plot {
+	width: 950px;
     margin: auto;
-
-    padding: 5px;
 }
 
-.indicator h3 {
-    padding-bottom: 0px;
-    margin-bottom: 0px;
-}
-
-.indicator h4 {
+/* Name */
+.indicator-title {
+	text-align: center;
     padding-top: 0px;
     margin-top: 0px;
 }
 
-
-h1, h2, p {
-    font-family: Arial, sans-serif;
+/* Value */
+.indicator-value {
+	text-align: center;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
 }
 
-a {
-    text-decoration: none;
+.right {
+	text-align: right;
+}
+
+.center {
+	text-align: center;
+}
+
+.link {
+	text-decoration: none;
+}
+
+#facebook {
+	width: 70%;
 }
