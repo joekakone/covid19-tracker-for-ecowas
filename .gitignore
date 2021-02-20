@@ -1,3 +1,10 @@
+# Custom
+Makefile
+*.ipynb
+*.sh
+dashboard/data/time_series/
+dashboard/data/time_series*.csv
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

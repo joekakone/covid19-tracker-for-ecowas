@@ -1,0 +1,31 @@
+#bokeh__layout {
+    margin: auto;
+}
+
+#container {
+    display: flex;
+    flex-direction: column;
+    width: 1000px;
+    margin: auto;
+
+    padding: 5px;
+}
+
+.indicator h3 {
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+
+.indicator h4 {
+    padding-top: 0px;
+    margin-top: 0px;
+}
+
+
+h1, h2, p {
+    font-family: Arial, sans-serif;
+}
+
+a {
+    text-decoration: none;
+}

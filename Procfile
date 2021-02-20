@@ -1,0 +1,1 @@
+web: bokeh serve --port=$PORT --allow-websocket-origin=covid19-tracker-for-ecowas-jk.herokuapp.com --address=0.0.0.0 --use-xheaders dashboard/
