@@ -12,13 +12,6 @@ from helpers.data import get_data, get_date
 from helpers.plot import bokeh_plot_layout, bokeh_barplot, bokeh_table, bokeh_geoplot
 
 
-def to_update_date(x):
-    x = x.split('/')[-1]
-    y, m, d = tuple(x.split('-')[:3])
-
-    return '-'.join([d, m, y])
-
-
 # Local CSV
 GEO_DATA = 'dashboard/data/ecowas-gps.csv'
 
