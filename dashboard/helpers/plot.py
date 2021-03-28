@@ -21,8 +21,7 @@ COLORS = {
     'Active':'red' ,
     'Deaths': 'gray'
     }
-ZOOM = 0.2
-GEO_ZOOM = 0.005
+ZOOM = 10
 
 
 def bokeh_barplot(data):
@@ -74,7 +73,7 @@ def bokeh_barplot(data):
 def bokeh_geoplot(data):
     x_range = (data['x'].min()-100000, data['x'].max()+1000000)
     y_range = (data['y'].min() ,data['y'].max())
-    source = ColumnDataSource(data={'size': data['Confirmed']*GEO_ZOOM,
+    source = ColumnDataSource(data={'size': data['MapSize']*ZOOM,
                                     'Country_Region': data['Country_Region'],
                                     'Confirmed': data['Confirmed'],
                                     'Active': data['Active'],
@@ -119,7 +118,7 @@ def bokeh_plot_layout(data):
     source = ColumnDataSource(data={'x_axis': data[default_x_axis],
                                     'y_axis': data[default_y_axis],
                                     'color': data[default_color],
-                                    'size': data[default_size]*ZOOM,
+                                    'size': data['MapSize']*ZOOM,
                                     'Country_Region': data['Country_Region'],
                                     'Confirmed': data['Confirmed'],
                                     'Active': data['Active'],

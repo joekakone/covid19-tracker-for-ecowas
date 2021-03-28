@@ -56,7 +56,18 @@ def get_data(url=URL):
     dt_ecowas = dt[dt["Country_Region"].isin(COUNTRIES)]
     dt_ecowas = dt_ecowas.drop(REMOVED, axis=1)
     dt_ecowas = dt_ecowas.reset_index().drop(["index"], axis=1)
-
+    # Compute bulles size on the map
+    quartiles = [dt_ecowas["Confirmed"].quantile(q) for q in [.25, .5, .75, 1]]
+    def get_size(v):
+        if v < quartiles[0]:
+            return 1
+        if v < quartiles[1]:
+            return 2
+        if v < quartiles[2]:
+            return 3
+        if v <= quartiles[3]:
+            return 4
+    dt_ecowas["MapSize"] = dt_ecowas["Confirmed"].apply(get_size)
 
     dt_ecowas.to_csv(f"dashboard/data/{save_date}-ecowas-covid19.csv", index=False)
 
