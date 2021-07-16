@@ -1,26 +1,31 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+"""
+    Bokeh Application for Covid19 Tracking in real time
+"""
 
-import os
-import datetime
+import requests
 
 import pandas as pd
 from bokeh.io import curdoc
 
-from helpers.data import get_data, get_date
+from helpers.data import get_data
 from helpers.plot import bokeh_plot_layout, bokeh_barplot, bokeh_table, bokeh_geoplot
 
-
-# Local CSV
-GEO_DATA = 'dashboard/data/ecowas-gps.csv'
+from config import API_URL, GEO_DATA
 
 # Set HTML page title
 curdoc().title = 'ECOWAS - Covid19 Tracker'
 
 # Load data
-print("Donwload data from Github")
-ecowas, update_date = get_data()
+try:
+    print("Donwload data from Github")
+    ecowas, update_date = get_data()
+except:
+    print("Retreive data from API")
+    r = requests.get(API_URL).json()
+    ecowas, update_date = pd.DataFrame(r["data"]), r["last_update"]
 
 print("Read data from ecowas-gps.csv")
 ecowas_geo = pd.read_csv(GEO_DATA)
@@ -35,7 +40,7 @@ active = int(ecowas.Active.sum())
 recovered = int(ecowas.Recovered.sum())
 deaths = int(ecowas.Deaths.sum())
 
-
+# Define variables for Jinja
 print("Add template Variables")
 curdoc().template_variables['update_date'] = update_date
 curdoc().template_variables['indicator_names'] = ['Confirmed', 'Recovered', 'Active', 'Deaths']

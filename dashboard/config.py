@@ -1,6 +1,11 @@
 # Ref --> https://github.com/CSSEGISandData/COVID-19
 BASE = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/"
 
+# API
+API_URL = "https://covid19data-jk.herokuapp.com/api/ecowas"
+
+# Local CSV
+GEO_DATA = 'dashboard/data/ecowas-gps.csv'
 
 # Time series data
 CONFIRMED = BASE+"csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"

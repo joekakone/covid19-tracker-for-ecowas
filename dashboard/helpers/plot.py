@@ -49,6 +49,7 @@ def bokeh_barplot(data):
     p.xaxis.major_label_orientation = 1
     p.xgrid.grid_line_color = None
     p.y_range.start = 0
+    p.yaxis.visible = False
     p.yaxis.formatter.use_scientific = False
 
     p.add_tools(HoverTool(tooltips=[

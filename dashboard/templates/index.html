@@ -5,8 +5,8 @@
     <meta property="og:fb:app_id" content="283781016271815">
     <meta property="og:title" content="ECOWAS  - Covid19 Tracker">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ecowas-covid19-tracker.herokuapp.com">
-    <meta property="og:image" content="https://ecowas-covid19-tracker.herokuapp.com/dashboard/static/img/cover.png">
+    <meta property="og:url" content="https://covid19-tracker-for-ecowas-jk.herokuapp.com/">
+    <meta property="og:image" content="https://covid19-tracker-for-ecowas-jk.herokuapp.com//dashboard/static/img/cover.png">
     <meta property="og:description" content="Dashboard for Covid19 tracking in ECOWAS">
     <meta property="og:image:width" content="800">
     <meta property="og:image:height" content="400">
@@ -52,16 +52,17 @@
             <!-- Bokeh Plots -->
             <div class="column">
                 <div class="bokeh__plot">
-                    <p>With the select widget choose the indicator to view</p>
+                    <p>Use the widget on the right to select the indicator to view</p>
                     {{ embed(roots.barplot) }}
                 </div>
                 <h2>Map Plot</h2>
                 <div class="bokeh__plot">
+                    <p>The size of the bubbles represents the number of deaths</p>
                     {{ embed(roots.geoplot) }}
                 </div>
                 <h2>Explore</h2>
                 <div class="bokeh__plot">
-                    <p>With the widgets you can choose the axes of the graphs. The size of the bubbles represents the number of deaths.</p>
+                    <p>Explore data with the widgets, the size of the bubbles represents the number of deaths</p>
                     {{ embed(roots.layout) }}
                 </div>
                 <h2>Raw Data</h2>
@@ -75,9 +76,9 @@
             <p>Feel free to leave your feedbacks in comments or tell what you think about the management of the crisis in ECOWAS zone. Share the tool with your friends and colleagues. Kind regards !</p>
             <div id="facebook">
                 <!-- Facebook like -->
-                <div class="fb-like" data-href="https://ecowas-covid19-tracker.herokuapp.com" data-width="" data-layout="standard" data-action="like" data-size="small" data-share="true"></div>
+                <div class="fb-like" data-href="https://covid19-tracker-for-ecowas-jk.herokuapp.com/" data-width="" data-layout="standard" data-action="like" data-size="small" data-share="true"></div>
                 <!-- Facebook comments -->
-                <div class="fb-comments" data-href="https://ecowas-covid19-tracker.herokuapp.com" data-numposts="5" data-width="100%" data-colorscheme="light"></div>
+                <div class="fb-comments" data-href="https://covid19-tracker-for-ecowas-jk.herokuapp.com/" data-numposts="5" data-width="100%" data-colorscheme="light"></div>
             </div>
 
             <!-- About -->

@@ -45,14 +45,17 @@ def get_date(current_day):
     return today, update_date, format_date
 
 def get_data(url=URL):
-    try: # today date
-        now = datetime.datetime.now()
-        format_date, human_date, save_date = get_date(now)
-        dt = pd.read_csv(url.format(format_date))
-    except: # yesterday
-        yesterday = datetime.datetime.now() - datetime.timedelta(1)
-        format_date, human_date, save_date = get_date(yesterday)
-        dt = pd.read_csv(url.format(format_date))
+    now = datetime.datetime.now()
+    while True:
+        try: # today date
+            format_date, human_date, save_date = get_date(now)
+            dt = pd.read_csv(url.format(format_date))
+            break
+        except:
+            pass
+        # the day before
+        now = now - datetime.timedelta(1)
+
     dt_ecowas = dt[dt["Country_Region"].isin(COUNTRIES)]
     dt_ecowas = dt_ecowas.drop(REMOVED, axis=1)
     dt_ecowas = dt_ecowas.reset_index().drop(["index"], axis=1)
