@@ -20,12 +20,12 @@ curdoc().title = 'ECOWAS - Covid19 Tracker'
 
 # Load data
 try:
+    print("Donwload data from Github")
+    ecowas, update_date = get_data()
+except:
     print("Retreive data from API")
     r = requests.get(API_URL).json()
     ecowas, update_date = pd.DataFrame(r["data"]), r["last_update"]
-except:
-    print("Donwload data from Github")
-    ecowas, update_date = get_data()
 
 print("Read data from ecowas-gps.csv")
 ecowas_geo = pd.read_csv(GEO_DATA)
