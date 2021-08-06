@@ -55,7 +55,7 @@ def get_data(url=URL):
             pass
         # the day before
         now = now - datetime.timedelta(1)
-
+    dt = dt.fillna(0)
     dt_ecowas = dt[dt["Country_Region"].isin(COUNTRIES)]
     dt_ecowas = dt_ecowas.drop(REMOVED, axis=1)
     dt_ecowas = dt_ecowas.reset_index().drop(["index"], axis=1)
