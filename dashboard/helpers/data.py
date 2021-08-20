@@ -3,6 +3,7 @@
 import datetime
 import pandas as pd
 
+from . import query
 
 # ecowas
 COUNTRIES = [
@@ -45,19 +46,22 @@ def get_date(current_day):
     return today, update_date, format_date
 
 def get_data(url=URL):
-    now = datetime.datetime.now()
-    while True:
-        try: # today date
-            format_date, human_date, save_date = get_date(now)
-            dt = pd.read_csv(url.format(format_date))
-            break
-        except:
-            pass
-        # the day before
-        now = now - datetime.timedelta(1)
-    dt = dt.fillna(0)
-    dt_ecowas = dt[dt["Country_Region"].isin(COUNTRIES)]
-    dt_ecowas = dt_ecowas.drop(REMOVED, axis=1)
+    # now = datetime.datetime.now()
+    # while True:
+    #     try: # today date
+    #         format_date, human_date, save_date = get_date(now)
+    #         dt = pd.read_csv(url.format(format_date))
+    #         break
+    #     except:
+    #         pass
+    #     # the day before
+    #     now = now - datetime.timedelta(1)
+    # dt = dt.fillna(0)
+    # dt_ecowas = dt[dt["Country_Region"].isin(COUNTRIES)]
+    # dt_ecowas = dt_ecowas.drop(REMOVED, axis=1)
+
+    dt_ecowas = query.query()
+    format_date, human_date, save_date = get_date(dt_ecowas["Date"][0])
     dt_ecowas = dt_ecowas.reset_index().drop(["index"], axis=1)
     # Compute bulles size on the map
     quartiles = [dt_ecowas["Confirmed"].quantile(q) for q in [.25, .5, .75, 1]]

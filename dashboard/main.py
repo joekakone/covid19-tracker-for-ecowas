@@ -22,7 +22,8 @@ curdoc().title = 'ECOWAS - Covid19 Tracker'
 try:
     print("Donwload data from Github")
     ecowas, update_date = get_data()
-except:
+except Exception as e:
+    raise e
     print("Retreive data from API")
     r = requests.get(API_URL).json()
     ecowas, update_date = pd.DataFrame(r["data"]), r["last_update"]
