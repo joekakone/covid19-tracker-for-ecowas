@@ -1,6 +1,11 @@
 {% extends base %}
 
 {% block preamble %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECOWAS - Covid19 Tracker</title>
+
     <!-- Open Graph Infos -->
     <meta property="og:fb:app_id" content="283781016271815">
     <meta property="og:title" content="ECOWAS  - Covid19 Tracker">
@@ -10,94 +15,42 @@
     <meta property="og:description" content="Dashboard for Covid19 tracking in ECOWAS">
     <meta property="og:image:width" content="800">
     <meta property="og:image:height" content="400">
+    
+    <!-- CSS files -->
     <link rel="stylesheet" href="dashboard/static/css/style.css">
     <link rel="shortcut icon" href="dashboard/static/img/favicon.png">
+    
     <!-- Facebook comments -->
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v7.0&appId=283781016271815&autoLogAppEvents=1" nonce="DfsG79O6"></script>
+    
     <!-- AddThis-->
     <!-- Go to www.addthis.com/dashboard to customize your tools -->
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e1ed9905267f8e8"></script>
+    <!-- <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5e1ed9905267f8e8"></script> -->
 {% endblock %}
 
 {% block contents %}
-    <div id="container">
-        <!-- Header -->
-        <hr>
-        <div class="row">
-            <div class="column">
-                <h1>ECOWAS - Covid19 Tracker</h1>
-                <p>Last Update: {{ update_date }}</p>
-            </div>
-            <div class="column">
-                <div class="row">
-                    <span>by</span>
-                    <h2><a class="link" href="https://github.com/joekakone" target="_blank">Joseph Konka</a></h2>
-                </div>
-                <p class="right">from <a class="link" href="http://www.rintio.com" target="_blank"><strong>RINTIO DataLab</strong></a></p>
-            </div>
+    <!-- Header -->
+    <header>
+        <div id="header" class="row">
+            <p class="bold margin-left">ECOWAS - Covid19 Tracker</p>
+            <p class="margin-right">Last Update: {{ update_date }}</p>
+            <!-- <p>by <a class="link" href="https://github.com/joekakone" target="_blank">Joseph Konka</a> -->
         </div>
-        <hr>
-        <div>
-            <!-- Indicators -->
-            <div id="indicators" class="row">
-                {% for name in indicator_names %}
-                <div class="indicator">
-                    <h2 class="indicator-value">{{ indicators[name].value }}</h2>
-                    <h5 class="indicator-title">{{ indicators[name].title }}</h5>
-                </div>
-                {% endfor %}
-            </div>
-            <hr>
-            <!-- Bokeh Plots -->
-            <div class="column">
-                <div class="bokeh__plot">
-                    <p>Use the widget on the right to select the indicator to view</p>
-                    {{ embed(roots.barplot) }}
-                </div>
-                <h2>Map Plot</h2>
-                <div class="bokeh__plot">
-                    <p>The size of the bubbles represents the number of deaths</p>
-                    {{ embed(roots.geoplot) }}
-                </div>
-                <h2>Explore</h2>
-                <div class="bokeh__plot">
-                    <p>Explore data with the widgets, the size of the bubbles represents the number of deaths</p>
-                    {{ embed(roots.layout) }}
-                </div>
-                <h2>Raw Data</h2>
-                <div class="bokeh__plot">
-                    {{ embed(roots.data_table) }}
-                </div>
-            </div>
+    </header>
 
-            <!-- Feedbacks -->
-            <h2>Comments & Feedbacks</h2>
-            <p>Feel free to leave your feedbacks in comments or tell what you think about the management of the crisis in ECOWAS zone. Share the tool with your friends and colleagues. Kind regards !</p>
-            <div id="facebook">
-                <!-- Facebook like -->
-                <div class="fb-like" data-href="https://covid19-tracker-for-ecowas-jk.herokuapp.com/" data-width="" data-layout="standard" data-action="like" data-size="small" data-share="true"></div>
-                <!-- Facebook comments -->
-                <div class="fb-comments" data-href="https://covid19-tracker-for-ecowas-jk.herokuapp.com/" data-numposts="5" data-width="100%" data-colorscheme="light"></div>
-            </div>
-
-            <!-- About -->
-            <div>
-                <h3>Source</h3>
-                <p>The data used comes exclusively from <a class="link" href="https://github.com/CSSEGISandData/COVID-19" target="_blank">https://github.com/CSSEGISandData/COVID-19</a></p>
-
-                <h3>RINTIO</h3>
-                <p>Rintio is a development, application integration, research and innovation company. <a class="link" href="http://www.rintio.com" target="_blank">Discover more..</a></p>
-
-                <h3>Maintainer</h3>
-                <p>Joseph Konka works at RINTIO as Junior Data Scientist. He graduated with a bachelor's degree in mathematics.<a class="link" href="https://github.com/joekakone" target="_blank"> Discover more..</a></p>
-            </div>
-
-            <!-- Disclaimer -->
-            <div>
-                <hr>
-                <p class="center"><strong>This project has no relation with ECOWAS Organization. Please contact <a class="link" href="mailto:joseph.kakone@gmail.com">joseph.kakone@gmail.com</a> for more informations.</strong></p>
-            </div>
+    <!-- Indicators -->
+    <div id="indicators" class="row">
+        {% for name in indicator_names %}
+        <div class="indicator">
+            <h2 class="indicator-value">{{ indicators[name].value }}</h2>
+            <h5 class="indicator-title">{{ indicators[name].title }}</h5>
         </div>
+        {% endfor %}
+    </div>
+    <hr>
+    <!-- Graphics -->
+    <div id="viz">
+        {{ embed(roots.p) }}
     </div>
 {% endblock%}

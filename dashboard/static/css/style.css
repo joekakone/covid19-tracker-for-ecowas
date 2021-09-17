@@ -2,9 +2,36 @@ body {
 	font-family: Arial, sans-serif;
 }
 
-#container {
-	width: 1000px;
-	margin: auto;
+/* HEADER */
+header {
+	width: 100%;
+	color: white;
+	background-color: gray;
+	left: 0;
+	top: 0;
+}
+
+main {
+	position: relative;
+}
+
+#indicators{
+	width: 100%;
+	justify-content: space-around;
+}
+
+#viz {
+	width: 950px;
+    margin: auto;
+}
+
+footer {
+	/* position: absolute; */
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	color: white;
+	background-color: black;
 }
 
 .row {
@@ -12,7 +39,6 @@ body {
 	flex-direction: row;
 	justify-content: space-between;
 	align-content: center;
-
 }
 
 .column { 
@@ -20,15 +46,6 @@ body {
 	flex-direction: column;
 	justify-content: flex-start;
 	align-content: center;
-}
-
-#indicators{
-	justify-content: space-around;
-}
-
-.bokeh__plot {
-	width: 950px;
-    margin: auto;
 }
 
 /* Name */
@@ -45,18 +62,14 @@ body {
     margin-bottom: 0px;
 }
 
-.right {
-	text-align: right;
+.bold {
+	font-weight: bold;
 }
 
-.center {
-	text-align: center;
+.margin-left {
+	margin-left: 10px;
 }
 
-.link {
-	text-decoration: none;
-}
-
-#facebook {
-	width: 70%;
+.margin-right {
+	margin-right: 10px;
 }

@@ -84,7 +84,7 @@ def bokeh_geoplot(data):
                                     'y': data['y']
                                 })
     p = figure(plot_width=900,
-               plot_height=400,
+               plot_height=500,
                tools='save',
                x_range=x_range,
                y_range=y_range,
@@ -194,6 +194,6 @@ def bokeh_table(data):
         TableColumn(field='Deaths', title='Deaths',
                     formatter=StringFormatter(text_align='left')),
     ]
-    data_table = DataTable(source=source_table, columns=columns, width=900, height=420, name='data_table')
+    data_table = DataTable(source=source_table, columns=columns, width=900, height=500, name='data_table')
 
     return data_table

@@ -41,3 +41,6 @@ COUNTRIES = [
 
 # Columns to remove
 REMOVED = ['FIPS', 'Admin2', 'Province_State', 'Combined_Key', 'Last_Update', 'Lat', 'Long_', 'Incident_Rate', 'Case_Fatality_Ratio']
+
+
+COLUMNS = ["Country_Region", "Confirmed", "Deaths", "Active", "Recovered", "Lat", "Long_", "Incident_Rate", "Case_Fatality_Ratio"]

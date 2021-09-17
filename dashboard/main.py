@@ -1,32 +1,29 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-"""
-    Bokeh Application for Covid19 Tracking in real time
-"""
 
-import requests
+import os
+import datetime
 
 import pandas as pd
 from bokeh.io import curdoc
+from bokeh.models import Panel, Tabs
 
-from helpers.data import get_data
+from helpers.data import get_data, get_date
 from helpers.plot import bokeh_plot_layout, bokeh_barplot, bokeh_table, bokeh_geoplot
 
-from config import API_URL, GEO_DATA
+
+# Local CSV
+GEO_DATA = 'dashboard/data/ecowas-gps.csv'
 
 # Set HTML page title
 curdoc().title = 'ECOWAS - Covid19 Tracker'
 
 # Load data
-try:
-    print("Donwload data from Github")
-    ecowas, update_date = get_data()
-except Exception as e:
-    raise e
-    print("Retreive data from API")
-    r = requests.get(API_URL).json()
-    ecowas, update_date = pd.DataFrame(r["data"]), r["last_update"]
+print("Donwload data from Github")
+# ecowas = pd.read_csv("dashboard/data/2021-09-16-ecowas-covid19.csv")
+# update_date = "16-09-2021"
+ecowas, update_date = get_data()
 
 print("Read data from ecowas-gps.csv")
 ecowas_geo = pd.read_csv(GEO_DATA)
@@ -37,11 +34,11 @@ countries = ecowas['Country_Region']
 # Agregated indicators
 print("Calculate aggregate KPIs")
 confirmed = int(ecowas.Confirmed.sum())
-active = int(ecowas.Active.sum())
-recovered = int(ecowas.Recovered.sum())
+active = "N/A"
+recovered = "N/A"
 deaths = int(ecowas.Deaths.sum())
 
-# Define variables for Jinja
+
 print("Add template Variables")
 curdoc().template_variables['update_date'] = update_date
 curdoc().template_variables['indicator_names'] = ['Confirmed', 'Recovered', 'Active', 'Deaths']
@@ -65,15 +62,24 @@ curdoc().template_variables['indicators'] = {
 }
 
 # Build the graph
-curdoc().add_root(bokeh_plot_layout(ecowas))
 
 # Barplot
-curdoc().add_root(bokeh_barplot(ecowas))
+p1 = bokeh_barplot(ecowas)
+tab1 = Panel(child=p1, title="Compare per country")
 
 # Geoplot
-curdoc().add_root(bokeh_geoplot(ecowas))
+p2 = bokeh_geoplot(ecowas)
+tab2 = Panel(child=p2, title="View on Map")
+
+# 
+p3 = bokeh_plot_layout(ecowas)
+tab3 = Panel(child=p3, title="Explore data")
 
 # Table
-curdoc().add_root(bokeh_table(ecowas))
+p4 = bokeh_table(ecowas)
+tab4 = Panel(child=p4, title="Raw data")
+
+p = Tabs(tabs=[tab1, tab2, tab3, tab4], name="p")
+curdoc().add_root(p)
 
 print("Launch App")
